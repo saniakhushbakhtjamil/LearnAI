@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.*
+.DS_Store
+README.md
+docker-compose.yml
+vendor/almari-kit/.git
+vendor/almari-kit/node_modules
