@@ -1,3 +1,3 @@
 [submodule "vendor/almari-kit"]
 	path = vendor/almari-kit
-	url = https://github.com/saniakhushbakhtjamil/Almari.git
+	url = git@github.com:saniakhushbakhtjamil/Almari.git
