@@ -22,6 +22,7 @@ function App() {
     localStorage.getItem(STORAGE_USER) || null);
   const [curriculum, setCurriculum] = React.useState(null);
   const [state, setState] = React.useState(null);
+  const [partnerState, setPartnerState] = React.useState(null);
   const [tab, setTab] = React.useState('today');
   const [openLesson, setOpenLesson] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -32,11 +33,13 @@ function App() {
     if (!userId) return;
     setLoading(true);
     setError(null);
+    const partnerId = userId === 's' ? 'b' : 's';
     Promise.all([
       fetch('/api/curriculum').then(r => r.json()),
       fetch(`/api/state?user=${userId}`).then(r => r.json()),
+      fetch(`/api/state?user=${partnerId}`).then(r => r.json()),
     ])
-      .then(([c, s]) => { setCurriculum(c); setState(s); })
+      .then(([c, s, p]) => { setCurriculum(c); setState(s); setPartnerState(p); })
       .catch(e => setError(e.message || 'load failed'))
       .finally(() => setLoading(false));
   }, [userId]);
@@ -58,9 +61,11 @@ function App() {
 
   // ─── API actions ──────────────────────────────────────────────────────
   function refreshState() {
-    return fetch(`/api/state?user=${userId}`)
-      .then(r => r.json())
-      .then(setState);
+    const partnerId = userId === 's' ? 'b' : 's';
+    return Promise.all([
+      fetch(`/api/state?user=${userId}`).then(r => r.json()),
+      fetch(`/api/state?user=${partnerId}`).then(r => r.json()),
+    ]).then(([s, p]) => { setState(s); setPartnerState(p); });
   }
 
   function markComplete(lessonId) {
@@ -120,7 +125,7 @@ function App() {
   }
 
   // ─── Loading / error ──────────────────────────────────────────────────
-  if (loading || !curriculum || !state) {
+  if (loading || !curriculum || !state || !partnerState) {
     return (
       <Surface theme={theme}>
         <div style={{
@@ -137,6 +142,12 @@ function App() {
 
   const accentColor = USER_ACCENTS[userId] || theme.warm;
   const user = state.user;
+
+  // Partner info — used by TodayTab and ProgressTab.
+  const partnerId = userId === 's' ? 'b' : 's';
+  const PARTNER_NAMES = { s: 'Sania', b: 'Björn' };
+  const partnerName = PARTNER_NAMES[partnerId];
+  const partnerAccent = USER_ACCENTS[partnerId] || theme.cool;
 
   const nav = [
     { id: 'today',    label: 'Today',    icon: UI_ICONS.Sparkle(undefined, 22),
@@ -203,6 +214,9 @@ function App() {
                   curriculum={curriculum}
                   state={state}
                   accentColor={accentColor}
+                  partnerState={partnerState}
+                  partnerName={partnerName}
+                  partnerAccent={partnerAccent}
                   onOpenLesson={(lesson, week) => setOpenLesson({ lesson, week })}
                 />
               )}
@@ -220,6 +234,9 @@ function App() {
                   curriculum={curriculum}
                   state={state}
                   accentColor={accentColor}
+                  partnerState={partnerState}
+                  partnerName={partnerName}
+                  partnerAccent={partnerAccent}
                 />
               )}
               {tab === 'you' && (

@@ -1,6 +1,6 @@
 // Today tab — current week banner, next up to 3 incomplete lessons, streak stat.
 
-function TodayTab({ theme, curriculum, state, onOpenLesson, accentColor }) {
+function TodayTab({ theme, curriculum, state, onOpenLesson, accentColor, partnerState, partnerName, partnerAccent }) {
   const completed = new Set(state.completed || []);
   const totalLessons = curriculum.weeks.reduce((n, w) => n + w.lessons.length, 0);
   const doneCount = state.completed?.length || 0;
@@ -22,6 +22,14 @@ function TodayTab({ theme, curriculum, state, onOpenLesson, accentColor }) {
 
   const streak = state.streak?.count || 0;
 
+  // Partner summary — current week and lesson count.
+  const partnerCompleted = partnerState ? new Set(partnerState.completed || []) : null;
+  const partnerDoneCount = partnerState ? (partnerState.completed?.length || 0) : 0;
+  const partnerWeek = partnerCompleted
+    ? (curriculum.weeks.find(w => w.lessons.some(l => !partnerCompleted.has(l.id)))
+        || curriculum.weeks[curriculum.weeks.length - 1])
+    : null;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: theme.space[5] }}>
       {/* Header row: streak + counts */}
@@ -31,6 +39,17 @@ function TodayTab({ theme, curriculum, state, onOpenLesson, accentColor }) {
           {doneCount} / {totalLessons} done
         </Tag>
       </div>
+
+      {/* Partner indicator */}
+      {partnerState && partnerWeek && (
+        <PartnerIndicator
+          theme={theme}
+          name={partnerName}
+          accent={partnerAccent}
+          weekNumber={partnerWeek.number}
+          doneCount={partnerDoneCount}
+        />
+      )}
 
       {/* Current week banner */}
       <Card theme={theme} tone="elev" style={{ borderColor: accentColor }}>
@@ -104,6 +123,39 @@ function TodayTab({ theme, curriculum, state, onOpenLesson, accentColor }) {
           </List>
         )}
       </div>
+    </div>
+  );
+}
+
+// Small partner status line — shows where the other user is.
+function PartnerIndicator({ theme, name, accent, weekNumber, doneCount }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: theme.space[2],
+      padding: `6px ${theme.space[3]}px`,
+      background: theme.card,
+      border: `1px solid ${theme.border}`,
+      borderRadius: theme.radius.md,
+      fontSize: theme.fontSize.sm,
+      color: theme.muted,
+      fontFamily: theme.type.sans,
+    }}>
+      {/* Colored dot for partner */}
+      <span style={{
+        width: 8, height: 8,
+        borderRadius: '50%',
+        background: accent,
+        flexShrink: 0,
+      }} />
+      <span>
+        <span style={{ color: accent, fontWeight: 600 }}>{name}</span>
+        {' '}is on{' '}
+        <span style={{ color: theme.fg }}>Week {weekNumber}</span>
+        {' · '}
+        <span style={{ color: theme.fg }}>{doneCount} lesson{doneCount === 1 ? '' : 's'} done</span>
+      </span>
     </div>
   );
 }
