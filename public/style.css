@@ -43,6 +43,10 @@ body {
   border-color: var(--lai-warm, #C84B3D);
 }
 
+/* AppShell: fill parent so BottomBar pins to viewport bottom */
+.ak-reset { height: 100%; }
+.ak-reset main { overflow-y: auto; }
+
 /* Scroll containers */
 .lai-scroll {
   overflow-y: auto;

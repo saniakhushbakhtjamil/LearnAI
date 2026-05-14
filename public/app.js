@@ -176,7 +176,7 @@ function App() {
   );
 
   return (
-    <Surface theme={theme} style={{ minHeight: '100dvh', background: theme.dustBg }}>
+    <Surface theme={theme} style={{ height: '100dvh', overflow: 'hidden', background: theme.dustBg }}>
       <AppShell
         theme={theme}
         nav={nav}
