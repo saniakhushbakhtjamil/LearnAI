@@ -8,6 +8,8 @@ services:
     env_file: .env
     networks:
       - traefik-public
+    volumes:
+      - learn-data:/data
     labels:
       - traefik.enable=true
       - traefik.http.routers.learn.rule=Host(`learn.almari`)
@@ -19,3 +21,6 @@ services:
 networks:
   traefik-public:
     external: true
+
+volumes:
+  learn-data:
