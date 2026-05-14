@@ -1,26 +1,26 @@
 services:
-  learn:
+  learnai:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: learn
+    container_name: learnai
     restart: unless-stopped
     env_file: .env
     networks:
       - traefik-public
     volumes:
-      - learn-data:/data
+      - learnai-data:/data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.learn.rule=Host(`learn.almari`)
-      - traefik.http.routers.learn.entrypoints=websecure
-      - traefik.http.routers.learn.tls=true
-      - traefik.http.services.learn.loadbalancer.server.port=3000
-      - traefik.http.services.learn.loadbalancer.responseforwarding.flushinterval=-1
+      - traefik.http.routers.learnai.rule=Host(`learnai.almari`)
+      - traefik.http.routers.learnai.entrypoints=websecure
+      - traefik.http.routers.learnai.tls=true
+      - traefik.http.services.learnai.loadbalancer.server.port=3000
+      - traefik.http.services.learnai.loadbalancer.responseforwarding.flushinterval=-1
 
 networks:
   traefik-public:
     external: true
 
 volumes:
-  learn-data:
+  learnai-data:

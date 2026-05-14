@@ -1,10 +1,10 @@
 # Learn AI together
 
 A 12-week shared AI learning app for Sania and Björn. Deploys to
-`learn.almari` on the Almari home server.
+`learnai.almari` on the Almari home server.
 
-This is the **P1 scaffold** — Express + React via CDN + the Almari design
-kit, with no curriculum, screens, or persistence yet.
+Express + React via CDN + the Almari design kit. SQLite for shared
+progress across both users on different devices.
 
 ## Local dev
 
@@ -35,7 +35,7 @@ curl -s http://localhost:3000/api/health
 ## Deploy
 
 Builds a single container; reverse-proxied by Traefik on Almari at
-`https://learn.almari` (joins the `traefik-public` external network).
+`https://learnai.almari` (joins the `traefik-public` external network).
 
 ```bash
 docker compose up -d --build
