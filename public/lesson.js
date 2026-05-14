@@ -118,7 +118,7 @@ function LearnView({ theme, lesson, notes, onSaveNote }) {
             color: theme.fg,
             marginBottom: theme.space[2],
             letterSpacing: '-0.01em',
-          }}>{block.title || block.concept}</div>
+          }}>{block.concept}</div>
           <div style={{
             fontSize: theme.fontSize.base,
             color: theme.fg,
@@ -334,40 +334,35 @@ function BuildView({ theme, lesson }) {
           <EmptyState theme={theme} title="No project steps for this lesson" />
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: theme.space[3] }}>
-            {steps.map((s, i) => {
-              const isObj = s && typeof s === 'object';
-              const label = isObj ? s.step : s;
-              const detail = isObj ? s.body : null;
-              return (
-                <div key={i} style={{ display: 'flex', gap: theme.space[3], alignItems: 'flex-start' }}>
-                  <span style={{
-                    width: 28, height: 28, borderRadius: '50%',
-                    background: theme.card,
-                    border: `1px solid ${theme.border}`,
+            {steps.map((s, i) => (
+              <div key={i} style={{ display: 'flex', gap: theme.space[3], alignItems: 'flex-start' }}>
+                <span style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: theme.card,
+                  border: `1px solid ${theme.border}`,
+                  color: theme.fg,
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: theme.type.mono, fontSize: theme.fontSize.sm, fontWeight: 600,
+                  flexShrink: 0, marginTop: 2,
+                }}>{i + 1}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    fontSize: theme.fontSize.base,
+                    fontWeight: 500,
                     color: theme.fg,
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: theme.type.mono, fontSize: theme.fontSize.sm, fontWeight: 600,
-                    flexShrink: 0, marginTop: 2,
-                  }}>{i + 1}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
+                    marginBottom: s.body ? 4 : 0,
+                  }}>{s.step}</div>
+                  {s.body && (
                     <div style={{
-                      fontSize: theme.fontSize.base,
-                      fontWeight: 500,
+                      fontSize: theme.fontSize.sm,
                       color: theme.fg,
-                      marginBottom: detail ? 4 : 0,
-                    }}>{label}</div>
-                    {detail && (
-                      <div style={{
-                        fontSize: theme.fontSize.sm,
-                        color: theme.fg,
-                        opacity: 0.8,
-                        lineHeight: 1.5,
-                      }}>{detail}</div>
-                    )}
-                  </div>
+                      opacity: 0.8,
+                      lineHeight: 1.5,
+                    }}>{s.body}</div>
+                  )}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
       </div>

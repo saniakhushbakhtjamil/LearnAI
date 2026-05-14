@@ -75,14 +75,12 @@ IDs: `w{N}-l1`, `w{N}-q1`, `w{N}-p1`. 12 weeks × 3 = 36 total.
   sub: '...',           // one-line description
   type: 'lesson',       // lesson | quiz | project
   duration: '22 min',
-  learn: [{ concept: '...', body: '...' }],   // 2-4 blocks; Week 1 uses 'title' instead of 'concept'
+  learn: [{ concept: '...', body: '...' }],   // 2-4 blocks
   quiz: { q: '...', opts: ['A','B','C','D'], correct: 0, explanation: '...' },
-  project: [{ step: '...', body: '...' }],    // 3-5 steps; Week 1 uses plain strings
+  project: [{ step: '...', body: '...' }],    // 3-5 steps
   ownProject: '...',    // open-ended challenge
 }
 ```
-
-Week 1 uses the original schema (`title` in learn, strings in project) — renderer handles both formats.
 
 ## Local dev
 
