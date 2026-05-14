@@ -45,7 +45,14 @@ body {
 
 /* AppShell: fill parent so BottomBar pins to viewport bottom */
 .ak-reset { height: 100%; }
-.ak-reset main { overflow-y: auto; }
+/* Inner flex column (topBar + main) must allow shrink so main's overflow
+   takes the scroll instead of leaking to the page — fixes mobile Chrome. */
+.ak-reset > div { min-height: 0; }
+.ak-reset main {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
 
 /* Scroll containers */
 .lai-scroll {
